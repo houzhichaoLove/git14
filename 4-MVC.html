@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			#write{
+				width: 300px;
+				height: 200px;
+			}
+		</style>
+	</head>
+	<body>
+		<textarea id="write"></textarea>
+		<p id="show"></p>
+		<input type="button" value="按钮" id="btn"/>
+	</body>
+</html>
+<!--
+	MVC
+-->
+<script type="text/javascript">
+	var oView = {
+		textArea : document.getElementById("write"),
+		show : document.getElementById("show"),
+		btn:document.getElementById("btn")
+	}
+	var oModel = {
+		value:"",
+		setValue:function(val){
+			this.value = val;
+			this.delegate.rootView.textArea.value = val;
+			this.delegate.rootView.show.innerHTML = val;
+		},
+		delegate:null
+	};
+	var oController = {
+		rootView : oView,
+		model : oModel,
+		start : function(){
+			var _this = this;
+			this.model.delegate = this;
+			this.rootView.textArea.oninput = function(ev)
+			{
+				_this.changeAction(ev);
+			};
+			this.rootView.textArea.onchange = function(ev)
+			{
+				_this.change(ev);
+			};
+			this.rootView.btn.onclick = function(){
+				_this.click();	
+			};
+			
+		},
+		changeAction:function(ev){
+			this.model.value = this.rootView.textArea.value;
+			this.rootView.show.innerHTML = this.model.value;
+		},
+		click:function(){
+			this.model.setValue("我是侯志超");
+		},
+		change:function(){
+			this.model.setValue("我是侯志超");
+		}
+	}
+	
+	oController.start();
+	
+</script>
